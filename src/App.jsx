@@ -30,10 +30,17 @@ function App() {
     setRandomPokemons(temp);
   }
 
-  // to-do:
-
   const handleClick = (e) => {
-
+    let value = e.target.getAttribute('data-key');
+    let id = (value === null) ? e.target.parentElement.getAttribute('data-key') : value;
+    let temp = [...randomPokemons];
+    let index = temp.findIndex((obj) => obj.id == id );
+    if(!temp[index].wasClicked) {
+      temp[index] = {...temp[index], wasClicked: true};
+      setRandomPokemons(temp);
+      shuffleArray(randomPokemons);
+    }
+    else console.log('Already clicked!');
   }
 
   const shuffleArray = (arr) => {
