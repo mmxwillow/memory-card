@@ -37,14 +37,18 @@ function App() {
     let index = temp.findIndex((obj) => obj.id == id );
     if(!temp[index].wasClicked) {
       temp[index] = {...temp[index], wasClicked: true};
-      setRandomPokemons(temp);
-      shuffleArray(randomPokemons);
+      shuffleArray(temp);
     }
     else console.log('Already clicked!');
   }
 
   const shuffleArray = (arr) => {
-
+    let temp = [...arr];
+    for (let i = temp.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [temp[i], temp[j]] = [temp[j], temp[i]];
+    }
+    setRandomPokemons(temp);
   }
 
   return (
