@@ -21,16 +21,17 @@ function App() {
     fetchData();
   }, []);
 
-  const getRandomPokemons = (allPokemon) => {
+  const getRandomPokemons = (arr) => {
     let temp = [];
+    let copy = [...arr];
     for(let i = 0; i<10; i++){
       let position = Math.floor(Math.random() * (100 - i));
-      let pokemon = {...allPokemon[position], id: i, wasClicked: false}
+      let pokedex = copy.findIndex((element) => element.name == arr[position].name) + 1;
+      let pokemon = {...arr[position], id: i, wasClicked: false, pokedex: pokedex}
       temp.push(pokemon);
-      allPokemon.push(allPokemon.splice(position, 1)[0]);
+      arr.push(arr.splice(position, 1)[0]);
     }
     setRandomPokemons(temp);
-    console.log(temp)
   }
 
   const handleClick = (e) => {

@@ -4,7 +4,7 @@ export default function GameContainer ({pokemons, handleClick, disabled}){
             {pokemons.map(element => {
                 return (
                     <button className="card" disabled={disabled} onClick={handleClick} key={element.id} data-key={element.id}>
-                        <img src="" alt="" />
+                        <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${element.pokedex}.png`} alt="" />
                         <div className="name">{element.name}</div>
                     </button>
                 )
