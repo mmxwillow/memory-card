@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import './styles/App.css'
 import GameContainer from './components/GameContainer';
+import EndGamePopup from './components/EndGamePopup';
 
 function App() {
   const [allPokemon, setAllPokemon] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [randomPokemons, setRandomPokemons] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +30,7 @@ function App() {
       allPokemon.push(allPokemon.splice(position, 1)[0]);
     }
     setRandomPokemons(temp);
+    console.log(temp)
   }
 
   const handleClick = (e) => {
@@ -36,10 +39,12 @@ function App() {
     let temp = [...randomPokemons];
     let index = temp.findIndex((obj) => obj.id == id );
     if(!temp[index].wasClicked) {
+      updateScores();
       temp[index] = {...temp[index], wasClicked: true};
       shuffleArray(temp);
+      if(currentScore == 9) setIsPopupOpen(true);
     }
-    else console.log('Already clicked!');
+    else setIsPopupOpen(true);
   }
 
   const shuffleArray = (arr) => {
@@ -51,13 +56,32 @@ function App() {
     setRandomPokemons(temp);
   }
 
+  const updateScores = () => {
+    let incrementedScore = currentScore + 1;
+    setCurrentScore(incrementedScore);
+    let newBestScore = Math.max(incrementedScore, bestScore);
+    setBestScore(newBestScore);
+  }
+
+  const playAgain = () => {
+    setIsPopupOpen(false);
+    getRandomPokemons(allPokemon);
+    setCurrentScore(0);
+  }
+
   return (
     <>
       <h1>Memory Card</h1>
+      <div className="score-board">
+        <p>Current score: {currentScore}</p>
+        <p>Best score: {bestScore}</p>
+      </div>
       <GameContainer 
         pokemons={randomPokemons}
         handleClick={handleClick}
+        disabled={isPopupOpen}
         />
+      {isPopupOpen && <EndGamePopup score={currentScore} playAgain={playAgain}/>}
     </>
   )
 }
