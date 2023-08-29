@@ -74,10 +74,12 @@ function App() {
 
   return (
     <>
+      <div className="wrapper">
       <h1>Memory Card</h1>
       <div className="score-board">
         <p>Current score: {currentScore}</p>
         <p>Best score: {bestScore}</p>
+      </div>
       </div>
       <GameContainer 
         pokemons={randomPokemons}
