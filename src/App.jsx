@@ -22,16 +22,16 @@ function App() {
   }, []);
 
   const getRandomPokemons = (arr) => {
-    let temp = [];
+    let random = [];
     let copy = [...arr];
     for(let i = 0; i<10; i++){
       let position = Math.floor(Math.random() * (100 - i));
-      let pokedex = copy.findIndex((element) => element.name == arr[position].name) + 1;
-      let pokemon = {...arr[position], id: i, wasClicked: false, pokedex: pokedex}
-      temp.push(pokemon);
-      arr.push(arr.splice(position, 1)[0]);
+      let pokedex = arr.findIndex((element) => element.name == copy[position].name) + 1;
+      let pokemon = {...copy[position], id: i, wasClicked: false, pokedex: pokedex}
+      random.push(pokemon);
+      copy.push(copy.splice(position, 1)[0]);
     }
-    setRandomPokemons(temp);
+    setRandomPokemons(random);
   }
 
   const handleClick = (e) => {
@@ -66,7 +66,9 @@ function App() {
 
   const playAgain = () => {
     setIsPopupOpen(false);
-    getRandomPokemons(allPokemon);
+    const copy = [].concat([...allPokemon]);
+    getRandomPokemons(copy);
+    console.log(allPokemon)
     setCurrentScore(0);
   }
 
